@@ -1,0 +1,535 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000; /* Dark background */
+    color: #e0e0e0; /* Light text */
+}
+
+/* Landing page styles */
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the top */
+    min-height: 100vh;
+    text-align: center;
+    color: #fff; /* White text */
+    padding-top: 20px; /* Add padding to create space between navbar and content */
+}
+
+.landing-page-header {
+    z-index: 2;
+    animation: fadeIn 2s ease-in-out;
+    position: relative;
+}
+
+.landing-page-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: slideInFromTop 1s ease-in-out;
+}
+
+.hammer-icon {
+    font-size: 48px;
+    background: linear-gradient(45deg, #97fb7e, #76b80d); /* Gradient color */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: bounce 2s infinite;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: transform 0.3s, background 0.3s;
+}
+
+
+.landing-page-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+.landing-page-image {
+    width: 100%;
+    height: auto;
+    opacity: 0.8;
+}
+
+.landing-page-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    padding: 20px;
+    box-sizing: border-box;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.landing-page-description {
+    font-size: 24px;
+    margin-bottom: 20px;
+    animation: slideInFromBottom 1s ease-in-out;
+}
+
+.landing-page-info {
+    font-size: 18px;
+    margin-bottom: 30px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.landing-page-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.landing-page-button:hover {
+    background-color: #0056b3;
+}
+
+/* Bidder item styles */
+.bidder-item {
+    background: linear-gradient(145deg, #333, #444); /* Dark gradient background */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #e0e0e0; /* Light text */
+    transition: transform 0.3s, background 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bidder-item:hover {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #444, #555); /* Lighter gradient on hover */
+}
+
+.bidder-item span {
+    font-weight: bold;
+    color: #00ff00; /* Bright green color for bid amount */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Navigation bar styles */
+nav {
+    background-color: #000; /* Black background */
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+    margin-bottom: 20px; /* Add top space */
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center align items */
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0 15px; /* Reduce spacing between items */
+}
+
+nav ul li a {
+    color: #e0e0e0; /* Light text */
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #333; /* Darker hover effect */
+}
+
+/* Main content styles */
+.main-content {
+    margin-top: 20px; /* Add margin to create space between navbar and content */
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #1e1e1e; /* Dark form background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Input fields styling */
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333; /* Dark input background */
+    color: #e0e0e0; /* Light text */
+}
+
+/* Textarea specific styling */
+form textarea {
+    height: 100px; /* Adjust height as needed */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+/* Button styling */
+form button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Error message styling */
+form p {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Home page styles */
+.home {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.home h1 {
+    color: #e0e0e0; /* Light text */
+}
+
+/* Auction styles */
+.auction-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto 0; /* Add margin-top to create space between navbar and content */
+    background-color: #1e1e1e; /* Dark background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center; /* Center align container content */
+}
+
+.auction-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00ff00; /* Bright green color */
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+}
+
+
+
+.auction-container h1,
+.auction-container h2 {
+    color: #e0e0e0; /* Light text */
+}
+
+.auction-container p {
+    color: #b0b0b0; /* Lighter text */
+}
+
+.auction-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auction-item {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* White gradient background */
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Make the item thinner */
+    max-width: 500px; /* Adjust the max-width */
+    transition: transform 0.3s;
+    text-align: center; /* Center the text */
+}
+
+.auction-item:hover {
+    transform: scale(1.05);
+}
+
+.auction-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.auction-link {
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit color from parent */
+}
+
+.auction-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none; /* Ensure no underline */
+    color: #333;
+    flex: 1; /* Allow title to take available space */
+    text-align: center; /* Center align title */
+}
+
+.auction-ask-price {
+    font-size: 16px;
+    text-decoration: none; /* Ensure no underline */
+    font-weight: bold;
+    color: #28a745; /* Green color for ask price */
+}
+
+/* Toggle form button styling */
+.toggle-form-button {
+    padding: 10px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.toggle-form-button:hover {
+    background-color: #0056b3;
+}
+
+/* Auction form styling */
+.auction-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #1e1e1e; /* Dark form background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Auction details styles */
+.auction-details-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #1e1e1e; /* Dark background */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center; /* Center align container content */
+}
+
+.auction-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2f3235; /* Bright green color */
+    margin-bottom: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.auction-description {
+    font-size: 18px;
+    color: #ffffff; /* Lighter text */
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.auction-ask-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #28a745; /* Green color for ask price */
+    margin-bottom: 20px;
+}
+
+.auction-creator,
+.auction-created-at {
+    font-size: 16px;
+    color: #b0b0b0; /* Lighter text */
+    margin-bottom: 10px;
+}
+
+.bid-button {
+    padding: 10px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff4500; /* Bright orange color */
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.bid-button:hover {
+    background-color: #e03e00;
+}
+
+.bid-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #1e1e1e; /* Dark form background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bid-form label {
+    font-size: 16px;
+    color: #e0e0e0; /* Light text */
+    margin-bottom: 10px;
+}
+
+.bid-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333; /* Dark input background */
+    color: #e0e0e0; /* Light text */
+}
+
+.submit-bid-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745; /* Green color */
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.submit-bid-button:hover {
+    background-color: #218838;
+}
+
+.bidders-header {
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(53, 255, 53);/* Dark gr; /* Bright green color */
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.bidders-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bidder-item {
+    background: linear-gradient(145deg, #f7f7f7, #f2dede); /* Dark gradient background */
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #e0e0e0; /* Light text */
+    transition: transform 0.3s, background 0.3s;
+}
+
+.bidder-item:hover {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #66c935, #b6eb33); /* Lighter gradient on hover */
+}
+
+.bidder-item span {
+    font-weight: bold;
+    color: #1d2018; /* Bright green color for bid amount */
+}
+
+.error-message {
+    color: red;
+}
+
+.loading-message {
+    color: #00ff00; /* Bright green color */
+}
