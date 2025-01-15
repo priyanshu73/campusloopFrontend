@@ -44,6 +44,11 @@ const AuctionDetails = () => {
         setBidders((prevBidders) => [newBid,...prevBidders]);
     };
 
+    const isCreator = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return auction && user && auction.creator.id === user.id;
+    };
+
     if (error) {
         return <p className="error-message">{error}</p>;
     }
@@ -59,8 +64,12 @@ const AuctionDetails = () => {
             <p className="auction-ask-price">Ask Price: ${auction.askPrice}</p>
             <p className="auction-creator">Created by: {auction.creator.username}</p>
             <p className="auction-created-at">Created at: {new Date(auction.createdAt).toLocaleString()}</p>
-            <button className="bid-button" onClick={() => setShowBidForm(!showBidForm)}>Bid</button>
-            {showBidForm && <BidForm auctionId={id} onNewBid={handleNewBid} />}
+            {!isCreator() && (
+                <>
+                    <button className="bid-button" onClick={() => setShowBidForm(!showBidForm)}>Bid</button>
+                    {showBidForm && <BidForm auctionId={id} onNewBid={handleNewBid} />}
+                </>
+            )}
             <h2 className="bidders-header">Bidders</h2>
             <ul className="bidders-list">
                 {bidders.map((bidder) => (
