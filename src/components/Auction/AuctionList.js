@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuctionItem from './AuctionItem';
 import { AuthContext } from '../Auth/AuthProvider';
+import { useNavigate } from 'react-router-dom';
  // Import the CSS file
 
 const AuctionList = () => {
@@ -11,6 +12,7 @@ const AuctionList = () => {
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false); // State to manage form visibility
     const { auth } = useContext(AuthContext); // Access auth state
+    const navigate = useNavigate();
     const baseUrl = 'http://localhost:3500';
 
     useEffect(() => {
@@ -69,7 +71,13 @@ const AuctionList = () => {
     return (
         <div className="auction-container">
             <h1 className="auction-header">Auctions</h1>
-            <button className="toggle-form-button" onClick={() => setShowForm(!showForm)}>
+            <button className="toggle-form-button" onClick={() => {
+                if (!auth) {
+                    navigate('/login'); // Redirect to login page if user is not logged in
+                } else {
+                    setShowForm(!showForm);
+                }
+            }}>
                 {showForm ? 'Cancel' : 'Create Auction'}
             </button>
             {showForm && (

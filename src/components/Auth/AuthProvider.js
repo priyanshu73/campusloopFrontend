@@ -1,10 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
-
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(null);
-
+    
     useEffect(() => {
         try {
             const token = localStorage.getItem('jwtToken');
@@ -27,6 +26,7 @@ const AuthProvider = ({ children }) => {
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('user');
         setAuth(null);
+      
     };
 
     return (

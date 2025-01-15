@@ -531,5 +531,34 @@ form p {
 }
 
 .loading-message {
-    color: #00ff00; /* Bright green color */
+    color: #00ff00;
+    text-align: center;
+    font-size: 24px;
+    color: #00ff00;
+    animation: fadeIn 1s ease-in-out; /* Bright green color */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.loading {
+    text-align: center;
+    font-size: 24px;
+    color: #00ff00;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
