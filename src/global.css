@@ -348,7 +348,7 @@ form p {
     text-align: center; /* Center align title */
 }
 
-.auction-ask-price {
+.auction-bid-ask-price {
     font-size: 16px;
     text-decoration: none; /* Ensure no underline */
     font-weight: bold;
