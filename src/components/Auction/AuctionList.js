@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AuctionItem from './AuctionItem';
 import { AuthContext } from '../Auth/AuthProvider';
-import { useNavigate } from 'react-router-dom';
- // Import the CSS file
+
 
 const AuctionList = () => {
     const [auctions, setAuctions] = useState([]);
@@ -11,58 +11,76 @@ const AuctionList = () => {
     const [askPrice, setAskPrice] = useState('');
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false); // State to manage form visibility
+    const [loading, setLoading] = useState(true); // State to manage loading
     const { auth } = useContext(AuthContext); // Access auth state
     const navigate = useNavigate();
     const baseUrl = 'http://localhost:3500';
 
     useEffect(() => {
         const fetchAuctions = async () => {
-            const response = await fetch(`${baseUrl}/favor`);
-            const data = await response.json();
-            setAuctions(data);
+            try {
+                let url = `${baseUrl}/favor`;
+                let options = {};
+
+                if (auth) {
+                    url = `${baseUrl}/favor/auth`;
+                    const token = localStorage.getItem('jwtToken');
+                    
+                    options = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    };
+                }
+
+                const response = await fetch(url, options);
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    setAuctions(data);
+                } else {
+                    setError('Unexpected data format');
+                }
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false); // Set loading to false after data is fetched
+            }
         };
 
         fetchAuctions();
-    }, []);
+    }, [auth]);
 
     const handleCreateAuction = async (e) => {
         e.preventDefault();
-        setError(''); // Clear any previous errors
-
-        const token = localStorage.getItem('jwtToken'); // Assuming the token is stored in localStorage
-
-        if (!token || !auth || !auth.user || !auth.user.id) {
-            setError('User is not authenticated');
+        if (!auth) {
+            navigate('/login'); // Redirect to login page if user is not logged in
             return;
         }
-
         try {
             const response = await fetch(`${baseUrl}/favor`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${auth.token}`,
                 },
                 body: JSON.stringify({
-                    title,
-                    description,
+                    title: title,
+                    description: description,
                     askPrice: parseFloat(askPrice), // Convert askPrice to float
-                    creatorId: auth.user.id
+                    creatorId: auth.user.id // Use the authenticated user's ID as creatorId
                 }),
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData.error);
-                return;
+            const newAuction = await response.json();
+            if (Array.isArray(auctions)) {
+                setAuctions([...auctions, newAuction]);
+            } else {
+                setAuctions([newAuction]);
             }
-
-            const newFavor = await response.json();
-            setAuctions([...auctions,newFavor]);
+            setShowForm(false);
             setTitle('');
             setDescription('');
             setAskPrice('');
-            setShowForm(false); // Hide the form after successful submission
         } catch (error) {
             setError(error.message);
         }
@@ -100,14 +118,18 @@ const AuctionList = () => {
                         onChange={(e) => setAskPrice(e.target.value)}
                     />
                     <button type="submit">Create Auction</button>
-                    {error && <p>{error}</p>}
                 </form>
             )}
-           <ul className="auction-list">
-            {auctions.slice().reverse().map((auction) => (
-                <AuctionItem key={auction.id} auction={auction} />
-            ))}
-        </ul>
+            {error && <div className="error">{error}</div>}
+            <div className="auction-list">
+                {loading ? (
+                    <div className="loading">Loading...</div> // Show loading indicator inside auction-list div
+                ) : (
+                    auctions.map((auction) => (
+                        <AuctionItem key={auction.id} auction={auction} /> // Ensure each child has a unique key
+                    ))
+                )}
+            </div>
         </div>
     );
 };
