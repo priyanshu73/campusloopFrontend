@@ -199,100 +199,135 @@ const BidButton = styled.button`
 `;
 
 const AuctionDetails = () => {
-  const { id } = useParams();
-  const [auction, setAuction] = useState(null);
-  const [bidders, setBidders] = useState([]);
-  const [error, setError] = useState('');
-  const [showBidForm, setShowBidForm] = useState(false);
-  const baseUrl = 'http://localhost:3500';
-
-  useEffect(() => {
-    const fetchAuctionDetails = async () => {
+    const { id } = useParams();
+    const [auction, setAuction] = useState(null);
+    const [bidders, setBidders] = useState([]);
+    const [error, setError] = useState('');
+    const [showBidForm, setShowBidForm] = useState(false);
+    const baseUrl = 'http://localhost:3500';
+  
+    useEffect(() => {
+      const fetchAuctionDetails = async () => {
+        try {
+          const token = localStorage.getItem('jwtToken');
+          const response = await fetch(`${baseUrl}/favor/${id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!response.ok) {
+            const errorData = await response.json();
+            setError(errorData.error);
+            return;
+          }
+  
+          const favor = await response.json();
+          setAuction(favor);
+          setBidders(favor.bids);
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+  
+      fetchAuctionDetails();
+    }, [id]);
+  
+    const handleNewBid = (newBid) => {
+      setBidders((prevBidders) => [newBid, ...prevBidders]);
+    };
+  
+    const isCreator = () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      return auction && user && auction.creator.id === user.id;
+    };
+  
+    const handleAcceptBid = async (bidId) => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const response = await fetch(`${baseUrl}/favor/${id}`, {
-          method: 'GET',
+        const response = await fetch(`${baseUrl}/bid/${bidId}/accept`, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
-
+        console.log(response)
+  
         if (!response.ok) {
           const errorData = await response.json();
           setError(errorData.error);
           return;
         }
-
-        const favor = await response.json();
-        setAuction(favor);
-        setBidders(favor.bids);
+  
+        // Optionally update the UI to reflect the accepted bid
+        const updatedBid = await response.json();
+        setBidders((prevBidders) =>
+          prevBidders.map((bid) =>
+            bid.id === updatedBid.id ? { ...bid, bidStatus: true } : bid
+          )
+        );
       } catch (error) {
         setError(error.message);
       }
+     console.log('Accepting bid with ID:', bidId);
     };
-
-    fetchAuctionDetails();
-  }, [id]);
-
-  const handleNewBid = (newBid) => {
-    setBidders((prevBidders) => [newBid, ...prevBidders]);
+  
+    if (error) {
+      return <p>{error}</p>;
+    }
+  
+    if (!auction) {
+      return <p>Loading...</p>;
+    }
+  
+    return (
+      <AuctionDetailsContainer>
+        <Title>{auction.title}</Title>
+        <Description>{auction.description}</Description>
+        <AskPrice>Ask Price: ${auction.askPrice}</AskPrice>
+        <Info>Created by: {auction.creator.username}</Info>
+        <Info>Created at: {new Date(auction.createdAt).toLocaleString()}</Info>
+  
+        {!isCreator() && (
+          <>
+            <BidButton onClick={() => setShowBidForm(!showBidForm)}>
+              Bid
+            </BidButton>
+            {showBidForm && <BidForm auctionId={id} onNewBid={handleNewBid} />}
+          </>
+        )}
+  
+        <BiddersHeader>Bidders</BiddersHeader>
+        <BidderList>
+          {bidders.map((bidder) => (
+            <BidderItem key={bidder.id}>
+              <BidderInfo>
+                <BidderName>{bidder.user.username}</BidderName>
+                <span>
+                  {new Date(bidder.createdAt).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                  })}
+                </span>
+              </BidderInfo>
+              <BidAmount>${bidder.amount}</BidAmount>
+              {isCreator() && (
+                <AcceptButton onClick={() => handleAcceptBid(bidder.id)}>
+                  Accept
+                </AcceptButton>
+              )}
+            </BidderItem>
+          ))}
+        </BidderList>
+      </AuctionDetailsContainer>
+    );
   };
-
-  const isCreator = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return auction && user && auction.creator.id === user.id;
-  };
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  if (!auction) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <AuctionDetailsContainer>
-      <Title>{auction.title}</Title>
-      <Description>{auction.description}</Description>
-      <AskPrice>Ask Price: ${auction.askPrice}</AskPrice>
-      <Info>Created by: {auction.creator.username}</Info>
-      <Info>Created at: {new Date(auction.createdAt).toLocaleString()}</Info>
-
-      {!isCreator() && (
-        <>
-          <BidButton onClick={() => setShowBidForm(!showBidForm)}>
-            Bid
-          </BidButton>
-          {showBidForm && <BidForm auctionId={id} onNewBid={handleNewBid} />}
-        </>
-      )}
-
-      <BiddersHeader>Bidders</BiddersHeader>
-      <BidderList>
-        {bidders.map((bidder) => (
-          <BidderItem key={bidder.id}>
-            <BidderInfo>
-              <BidderName>{bidder.user.username}</BidderName>
-              <span>
-                {new Date(bidder.createdAt).toLocaleString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit',
-                })}
-              </span>
-            </BidderInfo>
-            <BidAmount>${bidder.amount}</BidAmount>
-            {isCreator() && <AcceptButton>Accept Bid</AcceptButton>}
-          </BidderItem>
-        ))}
-      </BidderList>
-    </AuctionDetailsContainer>
-  );
-};
-
-export default AuctionDetails;
+  
+  export default AuctionDetails;

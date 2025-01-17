@@ -4,6 +4,7 @@ import { AuthContext } from '../Auth/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 const AuctionItem = ({ auction }) => {
+    console.log(auction)
     const { auth } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -17,18 +18,20 @@ const AuctionItem = ({ auction }) => {
     const lowestBid = auction.bids.length > 0 
         ? Math.min(...auction.bids.map(bid => bid.amount)) : 0;
     
-
-    return (
-        <li className="auction-item">
-            <Link to={`/auction/${auction.id}`} className="auction-link" onClick={handleClick}>
-                <div className="auction-item-content">
-                    <span className="auction-bid-ask-price">${auction.askPrice}</span>
-                    <span className="auction-title">{auction.title}</span>
-                    <span className="auction-bid-ask-price">${lowestBid}</span>
-                </div>
-            </Link>
-        </li>
-    );
+    if (auction.status  === 'PENDING') {
+        return (
+            <li className="auction-item">
+                <Link to={`/auction/${auction.id}`} className="auction-link" onClick={handleClick}>
+                    <div className="auction-item-content">
+                        <span className="auction-bid-ask-price">${auction.askPrice}</span>
+                        <span className="auction-title">{auction.title}</span>
+                        <span className="auction-bid-ask-price">${lowestBid}</span>
+                    </div>
+                </Link>
+            </li>
+        );
+    }
+    
 };
 
 export default AuctionItem;

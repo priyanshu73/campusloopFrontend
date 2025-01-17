@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-typescript": "^7.26.0",
     "cra-template": "1.2.0",
     "framer-motion": "^11.18.0",
     "lucide-react": "^0.471.1",
@@ -10,7 +11,9 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "styled-components": "^6.1.14",
+    "typescript": "^5.7.3"
   },
   "scripts": {
     "start": "react-scripts start",
