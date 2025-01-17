@@ -237,6 +237,10 @@ const AuctionDetails = () => {
   
     const handleNewBid = (newBid) => {
       setBidders((prevBidders) => [newBid, ...prevBidders]);
+      setAuction((prevAuction) => ({
+        ...prevAuction,
+        bids: [newBid, ...prevAuction.bids],
+      }))
     };
   
     const isCreator = () => {

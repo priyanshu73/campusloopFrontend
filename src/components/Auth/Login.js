@@ -15,18 +15,6 @@ const floatAnimation = keyframes`
     }
 `;
 
-const glowAnimation = keyframes`
-    0% {
-        box-shadow: 0 0 5px #4a90e2, 0 0 5px #4a90e2, 0 0 7px #4a90e2;
-    }
-    50% {
-        box-shadow: 0 0 10px #4a90e2, 0 0 5px #4a90e2, 0 0 15px #4a90e2;
-    }
-    100% {
-        box-shadow: 0 0 5px #4a90e2, 0 0 5px #4a90e2, 0 0 7px #4a90e2;
-    }
-`;
-
 const LoginContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -85,7 +73,7 @@ const Subtitle = styled.p`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
 `;
 
 
@@ -108,16 +96,16 @@ const SubmitButton = styled.button`
     padding: 1rem;
     background: linear-gradient(45deg, #2B6ABC, #1E88E5);
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     color: white;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    animation: ${glowAnimation} 2s infinite;
+
 
     &:hover {
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
     &:active {
@@ -190,7 +178,7 @@ const Login = () => {
                 <Form onSubmit={handleSubmit}>
                         <Input
                             type="email"
-                            placeholder="Your college email"
+                            placeholder="your.email@college.edu"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required

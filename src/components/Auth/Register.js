@@ -116,6 +116,7 @@ const SignInLink = styled.p`
     text-align: center;
     margin-top: 1rem;
     color: #F7ECCB;
+    font-weight: 600;
 
     a {
         color: #2B6ABC; 
