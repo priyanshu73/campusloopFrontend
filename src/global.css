@@ -19,6 +19,8 @@ body {
     padding-top: 20px; /* Add padding to create space between navbar and content */
 }
 
+
+
 .landing-page-header {
     z-index: 2;
     animation: fadeIn 2s ease-in-out;
