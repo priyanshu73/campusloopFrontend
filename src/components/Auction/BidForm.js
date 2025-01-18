@@ -1,6 +1,33 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../Auth/AuthProvider';
- // Import the CSS file
+
+
+export const submitBid = async({amount, auctionId, userId, token, baseUrl}) => {
+    try {
+        const response = await fetch(`${baseUrl}/bid`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                amount: parseFloat(amount),
+                favorId: auctionId,
+                userId: userId,
+            }),
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to submit bid');
+        }
+        return await response.json();
+    } catch (error) {
+        throw new Error (error.message);
+    }
+}
+
+
+
 
 const BidForm = ({ auctionId, onNewBid }) => {
     const [amount, setAmount] = useState('');
@@ -20,27 +47,13 @@ const BidForm = ({ auctionId, onNewBid }) => {
         }
 
         try {
-            const response = await fetch(`${baseUrl}/bid`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    amount: parseFloat(amount), // Convert amount to float
-                    favorId: auctionId,
-
-                    userId : auth.user.id
-                }),
+            const newBid = await submitBid({
+                amount,
+                auctionId,
+                userId: auth.user.id,
+                token,
+                baseUrl,
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData.error);
-                return;
-            }
-
-            const newBid = await response.json();
             setAmount('');
             onNewBid(newBid); // Call the callback function to update the bidders list
         } catch (error) {

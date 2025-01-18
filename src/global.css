@@ -19,6 +19,8 @@ body {
     padding-top: 20px; /* Add padding to create space between navbar and content */
 }
 
+
+
 .landing-page-header {
     z-index: 2;
     animation: fadeIn 2s ease-in-out;
@@ -348,7 +350,7 @@ form p {
     text-align: center; /* Center align title */
 }
 
-.auction-ask-price {
+.auction-bid-ask-price {
     font-size: 16px;
     text-decoration: none; /* Ensure no underline */
     font-weight: bold;

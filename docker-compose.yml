@@ -1,0 +1,14 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  frontend:
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile  # Specify the Dockerfile to use
+    ports:
+      - "3000:3000"  # Map port 3000 on the host to port 3000 in the container
+    environment:
+      - NODE_ENV=production  # Set environment variables if needed
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container
+      - /app/node_modules  # Avoid mounting node_modules from the host
