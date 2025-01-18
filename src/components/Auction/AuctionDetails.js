@@ -98,36 +98,47 @@ import styled from 'styled-components';
 import BidForm from './BidForm';
 
 const AuctionDetailsContainer = styled.div`
-  background-color: #1a1a2e;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(193, 53, 53, 0.1);
+  max-width: 900px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
 `;
 
 const Description = styled.p`
-  margin-bottom: 5px;
   font-size: 18px;
+  margin-bottom: 20px;
+  color: #666;
+  line-height: 1.6;
 `;
 
 const Info = styled.p`
   margin-bottom: 10px;
   font-size: 16px;
-  color: #b0b0b0;
+  color:rgb(0, 0, 0);
 `;
 
 const AskPrice = styled.div`
   font-size: 18px;
   font-weight: bold;
   background: #4caf50;
-  color: white;
+  color:rgb(0, 0, 0);
   padding: 5px 10px;
   border-radius: 5px;
   width: fit-content;
@@ -147,7 +158,8 @@ const BidderList = styled.ul`
 const BidderItem = styled.li`
   background-color: #2e2e4e;
   padding: 10px;
-  margin: 5px 0;
+  margin: 10px 0px 20px 0px;
+  width: 100%;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -181,6 +193,18 @@ const AcceptButton = styled.button`
   &:hover {
     background-color: #45a049;
   }
+`;
+
+const Card = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const BidButton = styled.button`
@@ -236,10 +260,10 @@ const AuctionDetails = () => {
     }, [id]);
   
     const handleNewBid = (newBid) => {
-      setBidders((prevBidders) => [newBid, ...prevBidders]);
+      setBidders((prevBidders) => [...prevBidders, newBid]);
       setAuction((prevAuction) => ({
         ...prevAuction,
-        bids: [newBid, ...prevAuction.bids],
+        bids: [...prevAuction.bids, newBid],
       }))
     };
   
@@ -289,6 +313,7 @@ const AuctionDetails = () => {
   
     return (
       <AuctionDetailsContainer>
+        <Card>
         <Title>{auction.title}</Title>
         <Description>{auction.description}</Description>
         <AskPrice>Ask Price: ${auction.askPrice}</AskPrice>
@@ -303,10 +328,10 @@ const AuctionDetails = () => {
             {showBidForm && <BidForm auctionId={id} onNewBid={handleNewBid} />}
           </>
         )}
-  
+      </Card>
         <BiddersHeader>Bidders</BiddersHeader>
         <BidderList>
-          {bidders.map((bidder) => (
+          {bidders.slice().reverse().map((bidder) => (
             <BidderItem key={bidder.id}>
               <BidderInfo>
                 <BidderName>{bidder.user.username}</BidderName>

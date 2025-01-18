@@ -124,7 +124,7 @@ export const StyledLink = styled(Link)`
         background-color: ${({ secondary }) => (secondary ? '#e0e0e0' : '#333')};
     }
 `;
-const AuctionItem = ({ auction }) => {
+const AuctionItem = ({ auction,onPlaceBid }) => {
     const { auth } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showBidInput, setShowBidInput] = useState(false);
@@ -132,6 +132,10 @@ const AuctionItem = ({ auction }) => {
     const [error, setError] = useState('');
     const baseUrl = 'http://localhost:3500';
 
+    const isCreator = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return auction && user && auction.creator.id === user.id;
+      };
     const handleClick = (e) => {
         if (!auth) {
             e.preventDefault();
@@ -141,7 +145,11 @@ const AuctionItem = ({ auction }) => {
 
     const handlePlaceBidClick = (e) => {
         e.preventDefault();
-        setShowBidInput(true);
+        handleClick(e);
+        if( !isCreator()){
+            setShowBidInput(true);
+        }
+        
     };
 
     const handleCancelClick = () => {
@@ -151,7 +159,11 @@ const AuctionItem = ({ auction }) => {
 
     const handleSubmitClick = async () => {
         setError(''); // Clear any previous errors
-
+        if (!bidAmount || isNaN(bidAmount) || parseFloat(bidAmount) <= 0) {
+            setError('Please enter a valid bid amount');
+            return;
+        }
+        
         const token = localStorage.getItem('jwtToken'); // Assuming the token is stored in localStorage
 
         if (!token) {
@@ -167,9 +179,15 @@ const AuctionItem = ({ auction }) => {
                 token,
                 baseUrl,
             });
+            const amt = bidAmount;
             setBidAmount('');
             setShowBidInput(false);
+
+            if( lowestBid == null || bidAmount < lowestBid){
+                onPlaceBid();
+            }
             // onNewBid(auction.id, newBid);
+            
         } catch (error) {
             setError(error.message);
         }
@@ -213,6 +231,7 @@ const AuctionItem = ({ auction }) => {
                                     onChange={(e) => setBidAmount(e.target.value)}
                                     placeholder="Enter your bid"
                                     style={{ padding: '0.5rem', borderRadius: '4px', marginRight: '0.5rem' }}
+                                    
                                 />
                                 <Button onClick={handleSubmitClick}>
                                     Submit

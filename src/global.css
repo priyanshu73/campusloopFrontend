@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #000; /* Dark background */
+    background-color: #000000; /* Dark background */
     color: #e0e0e0; /* Light text */
 }
 
@@ -15,7 +15,7 @@ body {
     justify-content: flex-start; /* Align items to the top */
     min-height: 100vh;
     text-align: center;
-    color: #fff; /* White text */
+    color: 	FAF9F6; /* White text */
     padding-top: 20px; /* Add padding to create space between navbar and content */
 }
 
@@ -563,4 +563,68 @@ form p {
     to {
         opacity: 1;
     }
+}
+
+.auction-container {
+    position: relative; /* Ensure the container is positioned relative to allow absolute positioning of the icon */
+}
+
+
+/* Tooltip container */
+.toggle-form-button {
+    position: relative;
+    cursor: pointer;
+}
+
+
+ 
+
+/* Tooltip container */
+.toggle-form-button {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Tooltip text */
+.toggle-form-button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 125%; /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+}
+
+/* Add a small arrow below the tooltip */
+.toggle-form-button::before {
+    content: '';
+    position: absolute;
+    top: 100%; /* Position at the bottom of the tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+/* Show the tooltip text when hovering over the button */
+.toggle-form-button:hover::after,
+.toggle-form-button:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(5px); /* Add a slight upward movement */
 }

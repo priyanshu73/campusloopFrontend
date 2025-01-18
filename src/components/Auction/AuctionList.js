@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuctionItem from './AuctionItem';
+import { FaMapPin } from 'react-icons/fa'; // Import the college icon from react-icons
 import { AuthContext } from '../Auth/AuthProvider';
 
 
@@ -15,7 +16,13 @@ const AuctionList = () => {
     const { auth } = useContext(AuthContext); // Access auth state
     const navigate = useNavigate();
     const baseUrl = 'http://localhost:3500';
+    const college = auth? auth.user.collegeName : ""; // State to manage college;
+    const [count, setCount] = useState(0);
 
+  // Function to trigger re-render
+  const handlePlaceBidClick = () => {
+    setCount(prevCount => prevCount + 1);
+  };
     useEffect(() => {
         const fetchAuctions = async () => {
             try {
@@ -39,7 +46,7 @@ const AuctionList = () => {
                 if (Array.isArray(data)) {
                     setAuctions(data);
                 } else {
-                    setError('Unexpected data format');
+                    setError("");
                 }
             } catch (error) {
                 setError(error.message);
@@ -49,7 +56,7 @@ const AuctionList = () => {
         };
 
         fetchAuctions();
-    }, [auth]);
+    }, [auth, count, auctions]);
 
     const handleCreateAuction = async (e) => {
         e.preventDefault();
@@ -88,14 +95,24 @@ const AuctionList = () => {
 
     return (
         <div className="auction-container">
-            <h1 className="auction-header">Auctions</h1>
-            <button className="toggle-form-button" onClick={() => {
-                if (!auth) {
-                    navigate('/login'); // Redirect to login page if user is not logged in
-                } else {
-                    setShowForm(!showForm);
-                }
-            }}>
+            <h1 className="auction-header">Market</h1>
+            {college && (
+                <div className="college-info">
+                    <FaMapPin className="college-icon" />
+                    <span className="college-name">{college}</span>
+                </div>
+            )}
+             <button
+                className="toggle-form-button"
+                data-tooltip={showForm ? '' : 'Create an auction to make your items available to the market. Find better buyers.'}
+                onClick={() => {
+                    if (!auth) {
+                        navigate('/login'); // Redirect to login page if user is not logged in
+                    } else {
+                        setShowForm(!showForm);
+                    }
+                }}
+            >
                 {showForm ? 'Cancel' : 'Create Auction'}
             </button>
             {showForm && (
@@ -126,7 +143,7 @@ const AuctionList = () => {
                     <div className="loading">Loading...</div> // Show loading indicator inside auction-list div
                 ) : (
                     auctions.map((auction) => (
-                        <AuctionItem key={auction.id} auction={auction} /> // Ensure each child has a unique key
+                        <AuctionItem key={auction.id} auction={auction}  onPlaceBid = {handlePlaceBidClick}/> // Ensure each child has a unique key
                     ))
                 )}
             </div>
